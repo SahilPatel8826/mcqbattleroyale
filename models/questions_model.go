@@ -129,3 +129,24 @@ func UpdateQuestionByID(id int, q Question) (Question, error) {
 
 	return current, nil
 }
+func DeleteQuestionByID(id int) error {
+	db := middleware.CreateConnection()
+	defer db.Close()
+
+	sqlStatement := `DELETE FROM questions WHERE question_id=$1`
+	result, err := db.Exec(sqlStatement, id)
+	if err != nil {
+		return fmt.Errorf("failed to delete question: %v", err)
+	}
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to check affected rows: %v", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("no question found with ID %d", id)
+	}
+
+	fmt.Println("✅ Question deleted with ID:", id)
+	return nil
+}

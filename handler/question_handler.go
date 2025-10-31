@@ -74,3 +74,24 @@ func UpdateQuestionByIDHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(updated)
 
 }
+func DeleteQuestionByIDHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+	idStr := params["id"]
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.Error(w, "Invalid question ID", http.StatusBadRequest)
+		return
+	}
+
+	err = models.DeleteQuestionByID(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": fmt.Sprintf("Question with ID %d deleted successfully", id),
+	})
+}

@@ -16,6 +16,8 @@ func main() {
 	r := mux.NewRouter()
 	routes.RoutesControl(r)
 	routes.QuestionRoutesControl(r)
+	routes.PlayerRoutesControl(r)
+	routes.AnswerRoutesControl(r)
 
 	fmt.Println("Database connection established successfully")
 	log.Fatal(http.ListenAndServe(":8000", r))

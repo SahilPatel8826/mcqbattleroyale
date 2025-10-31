@@ -10,4 +10,6 @@ func QuestionRoutesControl(router *mux.Router) {
 	router.HandleFunc("/api/question", handler.CreateQuestionHandler).Methods("POST")
 	router.HandleFunc("/api/question/{id}", handler.GetQuestionsByRoomIDHandler).Methods("GET")
 	router.HandleFunc("/api/question/{id}", handler.UpdateQuestionByIDHandler).Methods("PUT")
+	router.HandleFunc("/api/question/{id}", handler.DeleteQuestionByIDHandler).Methods("DELETE")
+
 }
