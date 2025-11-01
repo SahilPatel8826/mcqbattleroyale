@@ -56,3 +56,28 @@ func GetRoomHandler(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(get)
 }
+func StartRoomHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	roomID, _ := strconv.Atoi(params["id"])
+
+	err := models.UpdateRoomStatus(roomID, "active")
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	w.Write([]byte(`{"message": "Room Started!"}`))
+}
+
+func EndRoomHandler(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	roomID, _ := strconv.Atoi(params["id"])
+
+	err := models.UpdateRoomStatus(roomID, "ended")
+	if err != nil {
+		http.Error(w, err.Error(), 400)
+		return
+	}
+
+	w.Write([]byte(`{"message": "Room Ended!"}`))
+}

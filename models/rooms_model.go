@@ -89,3 +89,13 @@ func GetRoomWithQuestions(roomID int) (Room, error) {
 
 	return room, nil
 }
+func UpdateRoomStatus(roomID int, status string) error {
+	db := middleware.CreateConnection()
+	defer db.Close()
+
+	_, err := db.Exec(`UPDATE rooms SET status=$1 WHERE room_id=$2`, status, roomID)
+	if err != nil {
+		return fmt.Errorf("failed to update room status: %v", err)
+	}
+	return nil
+}
